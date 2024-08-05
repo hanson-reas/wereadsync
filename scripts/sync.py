@@ -10,13 +10,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def insert_to_notion(database_id,title,parent_database_id=None):
+def insert_to_notion(database_id,title,url,parent_database_id=None):
     parent = {
         "database_id": database_id,
         "type": "database_id",
     }
     properties = {
         "实多性识辨": {"title": [{"type": "text", "text": {"content": title}}]},
+        "URL": {"url": url},
     }
     if parent_database_id:
         properties["融通性识辨"] = utils.get_relation([parent_database_id])
@@ -35,6 +36,16 @@ def update_sync_status(page_id):
         properties=properties,
     )
 
+cache = {}
+def get_url(ids):
+    id = ids[0].get("id")
+    if id not in cache:
+        result = notion_helper.client.pages.retrieve(id)
+        properties = result.get("properties")
+        url = utils.get_property_value(properties.get("链接"))
+        cache[id] = url
+    return cache.get(id)
+    
 if __name__ == "__main__":
     notion_helper = NotionHelper()
     from_pages = os.getenv("FROM_PAGE").strip().split(",")
@@ -49,9 +60,10 @@ if __name__ == "__main__":
         print(f"共{len(results)}条数据，正在同步第{index+1}条数据")
         properties = result.get("properties")
         title = utils.get_property_value(properties.get("Name"))
-        parent_page_id = insert_to_notion(database_id=to_database_id,title=title)
+        url = get_url(utils.get_property_value(properties.get("书籍")))
+        parent_page_id = insert_to_notion(database_id=to_database_id,title=title,url=url)
         if "abstract" in properties:
             abstract = utils.get_property_value(properties.get("abstract"))
-            insert_to_notion(database_id=to_database_id,title=abstract,parent_database_id=parent_page_id)
+            insert_to_notion(database_id=to_database_id,title=abstract,url=url,parent_database_id=parent_page_id)
         update_sync_status(page_id=result.get("id"))
 
