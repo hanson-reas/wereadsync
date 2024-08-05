@@ -61,10 +61,12 @@ if __name__ == "__main__":
         print(f"共{len(results)}条数据，正在同步第{index+1}条数据")
         properties = result.get("properties")
         title = utils.get_property_value(properties.get("Name"))
-        icon = result.get("icon")
+        icon_url = "https://www.notion.so/icons/drafts_gray.svg" if "abstract" in properties else "https://www.notion.so/icons/bookmark_gray.svg"
+        icon = {'type': 'external', 'external': {'url': icon_url}}
         url = get_url(utils.get_property_value(properties.get("书籍")))
         parent_page_id = insert_to_notion(icon=icon,database_id=to_database_id,title=title,url=url)
         if "abstract" in properties:
+            icon = {'type': 'external', 'external': {'url': 'https://www.notion.so/icons/bookmark_gray.svg'}}
             abstract = utils.get_property_value(properties.get("abstract"))
             insert_to_notion(icon=icon,database_id=to_database_id,title=abstract,url=url,parent_database_id=parent_page_id)
         update_sync_status(page_id=result.get("id"))
