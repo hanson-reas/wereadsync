@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def insert_to_notion(database_id,title,url,parent_database_id=None):
+def insert_to_notion(icon,database_id,title,url,parent_database_id=None):
     parent = {
         "database_id": database_id,
         "type": "database_id",
@@ -24,6 +24,7 @@ def insert_to_notion(database_id,title,url,parent_database_id=None):
     page_id= notion_helper.create_page(
         parent=parent,
         properties=properties,
+        icon=icon
     ).get("id")
     return page_id
 
@@ -60,10 +61,11 @@ if __name__ == "__main__":
         print(f"共{len(results)}条数据，正在同步第{index+1}条数据")
         properties = result.get("properties")
         title = utils.get_property_value(properties.get("Name"))
+        icon = result.get("icon")
         url = get_url(utils.get_property_value(properties.get("书籍")))
-        parent_page_id = insert_to_notion(database_id=to_database_id,title=title,url=url)
+        parent_page_id = insert_to_notion(icon=icon,database_id=to_database_id,title=title,url=url)
         if "abstract" in properties:
             abstract = utils.get_property_value(properties.get("abstract"))
-            insert_to_notion(database_id=to_database_id,title=abstract,url=url,parent_database_id=parent_page_id)
+            insert_to_notion(icon=icon,database_id=to_database_id,title=abstract,url=url,parent_database_id=parent_page_id)
         update_sync_status(page_id=result.get("id"))
 

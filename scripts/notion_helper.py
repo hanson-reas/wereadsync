@@ -90,9 +90,9 @@ class NotionHelper:
         return self.client.pages.update(page_id=page_id, properties=properties)
 
     @retry(stop_max_attempt_number=3, wait_fixed=5000)
-    def create_page(self, parent, properties):
+    def create_page(self, parent, properties,icon):
         return self.client.pages.create(
-            parent=parent, properties=properties
+            parent=parent, properties=properties,icon=icon
         )
 
     @retry(stop_max_attempt_number=3, wait_fixed=5000)
