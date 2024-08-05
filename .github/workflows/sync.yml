@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
         NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-        NOTION_FROM_PAGE: ${{ secrets.NOTION_FROM_PAGE }}
-        NOTION_TO_PAGE: ${{ secrets.NOTION_TO_PAGE }}
+        FROM_PAGE: ${{ secrets.NOTION_FROM_PAGE }}
+        TO_PAGE: ${{ secrets.NOTION_TO_PAGE }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
