@@ -18,7 +18,7 @@ def insert_to_notion(icon,database_id,title,url,parent_database_id=None):
     properties = {
         "实多性识辨": {"title": [{"type": "text", "text": {"content": title}}]},
         "URL": {"url": url},
-        "预始时间": {"Date": date},
+        "预始时间": {"Date": {"content":date }},
     }
     if parent_database_id:
         properties["融通性识辨"] = utils.get_relation([parent_database_id])
