@@ -12,6 +12,7 @@ load_dotenv()
 from utils import (
     get_icon,
     get_title,
+    get_date,
 )
 
 class NotionHelper:
