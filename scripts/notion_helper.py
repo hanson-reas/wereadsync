@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 import utils
 load_dotenv()
 from utils import (
+format_date,
+    format_date,
     get_icon,
     get_title,
     get_date,
