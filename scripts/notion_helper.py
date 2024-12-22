@@ -14,7 +14,6 @@ format_date,
     format_date,
     get_icon,
     get_title,
-    get_date,
 )
 
 class NotionHelper:
