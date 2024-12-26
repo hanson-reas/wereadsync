@@ -30,3 +30,19 @@ jobs:
       - name: weread bookmark sync
         run: |
           python -u scripts/sync.py
+      - name: Set up secret file
+        env:
+          FROM_PAGE: ${{ secrets.FROM_PAGE }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          TO_PAGE: ${{ secrets.TO_PAGE }}
+        run: |
+          echo $FROM_PAGE >> secrets.txt
+          echo $NOTION_TOKEN >> secrets.txt
+          echo $TO_PAGE >> secrets.txt
+      - name: push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m 'add new heatmap' || echo "nothing to commit"
+          git push || echo "nothing to push"
