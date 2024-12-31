@@ -3,7 +3,7 @@ name: weread bookmark sync
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0,20,40 * * * *"
+    - cron: "2,22,42 * * * *"
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
